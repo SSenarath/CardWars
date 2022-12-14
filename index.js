@@ -3,8 +3,7 @@ const drawBtn = document.getElementById('draw-cards')
 const cardsContainer = document.getElementById('cards')
 const header = document.getElementById('header')
 const remainingCards = document.getElementById('remaining-cards')
-let card1 = ''
-let card2 = ''
+
 let card1score = 0
 let card2score = 0
 let deckId =''
@@ -58,25 +57,29 @@ function highest(card1, card2){
 
 function drawCard(){
     if(deckId){
+        
         fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
         .then(res => res.json())
         .then(data => {
-            card1 = data.cards[0]
+            let card1 = data.cards[0]
             cardsContainer.children[2].innerHTML =`<img class="card-image"src='${card1.image}'>`
-            card2 = data.cards[1]
+            let card2 = data.cards[1]
             cardsContainer.children[3].innerHTML =`<img class="card-image"src='${card2.image}'>`
             header.innerText = highest(card1,card2)
 
-            if(data.remaining >= 0){
-                remainingCards.innerText = data.remaining
-            } else {
-                if(card2score < card1score){
+            
+            remainingCards.innerText = data.remaining
+          
+
+            if (data.remaining === 0) {
+                drawBtn.disabled = true
+                if(card2score > card1score){
                     header.innerText = 'Game Over - You Win'
-                } else if(card2score > card1score){
+                } else if(card2score < card1score){
                     header.innerText = 'Game Over - The Computer Wins'
                 }  else {
                     return "Game Over - It's a tie"
-                }      
+                } 
             }
           
         })

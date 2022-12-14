@@ -43,6 +43,11 @@ h3 {
     align-self: flex-start;
 }
 
+#draw-cards:disabled {
+    cursor:not-allowed;
+}
+
+
 .card-image {
     width: 100%;
     height: 100%;
